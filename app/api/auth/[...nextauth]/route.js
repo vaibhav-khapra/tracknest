@@ -20,6 +20,7 @@ export const authOptions = {
                         useNewUrlParser: true,
                        
                     });
+                    await mongoose.connect(process.env.MONGODB_URI);
                     isConnected = true;
                 }
 
