@@ -4,7 +4,7 @@ import Item from "@/app/models/Items";
 
 export async function POST(req) {
     try {
-        await mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tracknest");
+        await mongoose.connect(process.env.MONGODB_URI);
         const { email } = await req.json();
 
         const items = await Item.aggregate([

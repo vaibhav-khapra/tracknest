@@ -3,12 +3,12 @@ import mongoose from "mongoose";
 import Item from "@/app/models/Items";
 import Bill from "@/app/models/Bill";
 
-const MONGODB_URI = "mongodb://localhost:27017/tracknest";
+
 
 export async function POST(req) {
     try {
         if (mongoose.connection.readyState === 0) {
-            await mongoose.connect(MONGODB_URI);
+            await mongoose.connect(process.env.MONGODB_URI);
         }
 
         const {

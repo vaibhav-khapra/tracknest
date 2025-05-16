@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import User from "@/app/models/User";
 
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/tracknest";
+const MONGODB_URI = process.env.MONGODB_URI ;
 
 // Define allowed fields that can be updated
 const ALLOWED_UPDATES = ['shopName', 'mobileNo', 'gstin', 'address', 'ownerName'];

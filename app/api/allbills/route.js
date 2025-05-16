@@ -3,7 +3,7 @@ import Bill from "@/app/models/Bill";
 
 export async function POST(req) {
     try {
-        const conn = await mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost:27017/tracknest")
+        const conn = await mongoose.connect(process.env.MONGODB_URI)
 
         const { email, page = 1, limit = 10 } = await req.json();
 

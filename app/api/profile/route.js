@@ -3,7 +3,7 @@ import User from "@/app/models/User";
 
 export async function POST(req) {
     try {
-        await mongoose.connect("mongodb://localhost:27017/tracknest");
+        await mongoose.connect(process.env.MONGODB_URI);
 
         const { email } = await req.json();
         const users = await User.findOne({ email });

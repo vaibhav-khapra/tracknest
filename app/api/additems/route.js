@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 
 export async function POST(req) {
     try {
-        const conn = await mongoose.connect("mongodb://localhost:27017/tracknest")
+        const conn = await mongoose.connect(process.env.MONGODB_URI)
 
         const { title, description, price, quantity, expirydate, ownerEmail } = await req.json();
 

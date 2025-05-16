@@ -16,7 +16,7 @@ export const authOptions = {
         async signIn({ user, account }) {
             if (account.provider === "google") {
                 if (!isConnected) {
-                    await mongoose.connect("mongodb://localhost:27017/tracknest", {
+                    await mongoose.connect(process.env.MONGODB_URI, {
                         useNewUrlParser: true,
                         useUnifiedTopology: true,
                     });
