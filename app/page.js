@@ -1,8 +1,11 @@
+"use client"
 import Image from "next/image";
 import Navbar from "./components/Navbar";
 import Images from "./components/Images";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter()
   const pricingPlans = [
     {
       name: "Free",
@@ -85,7 +88,10 @@ export default function Home() {
               Gain real-time insights, set automated alerts, and access powerful analytics—all from one intuitive platform.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <button className="px-6 py-3 rounded-lg text-white font-medium bg-blue-600 hover:bg-blue-700 transition-all transform hover:-translate-y-1 shadow-lg hover:shadow-xl">
+              <button onClick={(params) => {
+                router.push("/login")
+              }
+              } className="px-6 py-3 rounded-lg text-white font-medium bg-blue-600 hover:bg-blue-700 transition-all transform hover:-translate-y-1 shadow-lg hover:shadow-xl">
                 Start Free Trial
               </button>
               <button className="px-6 py-3 rounded-lg font-medium border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors">
@@ -195,7 +201,10 @@ export default function Home() {
                   ))}
                 </ul>
 
-                <button className={`mt-10 w-full py-3 px-6 rounded-lg font-medium transition-all ${plan.isPopular
+                <button onClick={(params) => {
+                  router.push("/login")
+                }
+                } className={`mt-10 w-full py-3 px-6 rounded-lg font-medium transition-all ${plan.isPopular
                     ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-md hover:shadow-lg'
                     : 'bg-white text-blue-600 border border-blue-600 hover:bg-blue-50'
                   }`}>

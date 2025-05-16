@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import User from "@/app/models/User";
 import GoogleProvider from "next-auth/providers/google";
 
-let isConnected = false; // Prevent multiple DB connections
+let isConnected = false; 
 
 export const authOptions = {
     providers: [
@@ -18,7 +18,7 @@ export const authOptions = {
                 if (!isConnected) {
                     await mongoose.connect(process.env.MONGODB_URI, {
                         useNewUrlParser: true,
-                        useUnifiedTopology: true,
+                       
                     });
                     isConnected = true;
                 }
