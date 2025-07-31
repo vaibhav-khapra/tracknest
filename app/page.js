@@ -3,7 +3,7 @@ import Image from "next/image";
 import Navbar from "./components/Navbar";
 import Images from "./components/Images";
 import { useRouter } from "next/navigation";
-
+import Link from "next/link";
 export default function Home() {
   const router = useRouter()
   const pricingPlans = [
@@ -328,7 +328,10 @@ export default function Home() {
           <p className="text-gray-400 text-sm">
             &copy; {new Date().getFullYear()} Tracknest. All rights reserved.
           </p>
-          <p className="text-gray-400 text-sm">Designed by Vaibhav Khapra</p>
+          <Link href="vaibhavkhapra.vercel.app">
+            <p className="text-gray-400 text-sm">Designed by Vaibhav Khapra</p>
+          </Link>
+         
           <div className="mt-4 md:mt-0 flex space-x-6">
             <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
             <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Terms of Service</a>
