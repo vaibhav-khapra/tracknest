@@ -328,9 +328,12 @@ export default function Home() {
           <p className="text-gray-400 text-sm">
             &copy; {new Date().getFullYear()} Tracknest. All rights reserved.
           </p>
-          <Link href="vaibhavkhapra.vercel.app">
-            <p className="text-gray-400 text-sm">Designed by Vaibhav Khapra</p>
-          </Link>
+          
+
+<Link href="https://vaibhavkhapra.vercel.app" target="_blank" rel="noopener noreferrer">
+  Developed by Vaibhav Khapra
+</Link>
+
          
           <div className="mt-4 md:mt-0 flex space-x-6">
             <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
