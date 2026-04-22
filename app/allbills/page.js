@@ -125,6 +125,14 @@ export default function AllBillsPage() {
     const blob = new Blob([wbout], { type: "application/octet-stream" });
     saveAs(blob, "Bills.xlsx");
   };
+  {/* 1. Calculate the raw subtotal first (Sum of quantity * price) */}
+const subtotal = selectedBill.items.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+
+{/* 2. Calculate actual amounts based on the raw subtotal */}
+const discountAmount = (subtotal * selectedBill.discount) / 100;
+const cgstAmount = (subtotal * selectedBill.cgst) / 100;
+const sgstAmount = (subtotal * selectedBill.sgst) / 100;
+const grandTotal = selectedBill.totalAmount; // This is already 5.40 from your DB
 
   if (status === "loading" || !session)
     return <p className="text-center mt-20">Loading...</p>;
