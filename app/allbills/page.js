@@ -125,16 +125,22 @@ export default function AllBillsPage() {
     const blob = new Blob([wbout], { type: "application/octet-stream" });
     saveAs(blob, "Bills.xlsx");
   };
-  {/* 1. Calculate the raw subtotal first (Sum of quantity * price) */}
-  const subtotal = selectedBill 
-    ? selectedBill.items.reduce((acc, item) => acc + (item.price * item.quantity), 0) 
+  {
+    /* 1. Calculate the raw subtotal first (Sum of quantity * price) */
+  }
+  const subtotal = selectedBill
+    ? selectedBill.items.reduce(
+        (acc, item) => acc + item.price * item.quantity,
+        0,
+      )
     : 0;
-  
-  const discountAmount = selectedBill ? (subtotal * selectedBill.discount) / 100 : 0;
+
+  const discountAmount = selectedBill
+    ? (subtotal * selectedBill.discount) / 100
+    : 0;
   const cgstAmount = selectedBill ? (subtotal * selectedBill.cgst) / 100 : 0;
   const sgstAmount = selectedBill ? (subtotal * selectedBill.sgst) / 100 : 0;
   const grandTotal = selectedBill ? selectedBill.totalAmount : 0;
-
 
   if (status === "loading" || !session)
     return <p className="text-center mt-20">Loading...</p>;
@@ -387,48 +393,62 @@ export default function AllBillsPage() {
 
                   {/* Summary */}
                   <div className="flex justify-end">
-  <div className="w-64">
-    {/* Subtotal: Sum of item prices before any modifiers */}
-    <div className="flex justify-between py-2 border-b border-gray-200">
-      <span className="text-gray-700">Subtotal:</span>
-      <span className="text-gray-900 font-medium">
-        ₹{subtotal.toFixed(2)}
-      </span>
-    </div>
+                    <div className="w-64">
+                      {/* Subtotal: Sum of item prices before any modifiers */}
+                      <div className="flex justify-between py-2 border-b border-gray-200">
+                        <span className="text-gray-700">Subtotal:</span>
+                        <span className="text-gray-900 font-medium">
+                          ₹{subtotal.toFixed(2)}
+                        </span>
+                      </div>
 
-    {/* Discount: Based on the raw subtotal */}
-    {selectedBill.discount > 0 && (
-      <div className="flex justify-between py-2 border-b border-gray-200">
-        <span className="text-gray-700">Discount ({selectedBill.discount}%):</span>
-        <span className="text-red-500">-₹{discountAmount.toFixed(2)}</span>
-      </div>
-    )}
+                      {/* Discount: Based on the raw subtotal */}
+                      {selectedBill.discount > 0 && (
+                        <div className="flex justify-between py-2 border-b border-gray-200">
+                          <span className="text-gray-700">
+                            Discount ({selectedBill.discount}%):
+                          </span>
+                          <span className="text-red-500">
+                            -₹{discountAmount.toFixed(2)}
+                          </span>
+                        </div>
+                      )}
 
-    {/* CGST */}
-    {selectedBill.cgst > 0 && (
-      <div className="flex justify-between py-2 border-b border-gray-200">
-        <span className="text-gray-700">CGST ({selectedBill.cgst}%):</span>
-        <span className="text-gray-900">₹{cgstAmount.toFixed(2)}</span>
-      </div>
-    )}
+                      {/* CGST */}
+                      {selectedBill.cgst > 0 && (
+                        <div className="flex justify-between py-2 border-b border-gray-200">
+                          <span className="text-gray-700">
+                            CGST ({selectedBill.cgst}%):
+                          </span>
+                          <span className="text-gray-900">
+                            ₹{cgstAmount.toFixed(2)}
+                          </span>
+                        </div>
+                      )}
 
-    {/* SGST */}
-    {selectedBill.sgst > 0 && (
-      <div className="flex justify-between py-2 border-b border-gray-200">
-        <span className="text-gray-700">SGST ({selectedBill.sgst}%):</span>
-        <span className="text-gray-900">₹{sgstAmount.toFixed(2)}</span>
-      </div>
-    )}
+                      {/* SGST */}
+                      {selectedBill.sgst > 0 && (
+                        <div className="flex justify-between py-2 border-b border-gray-200">
+                          <span className="text-gray-700">
+                            SGST ({selectedBill.sgst}%):
+                          </span>
+                          <span className="text-gray-900">
+                            ₹{sgstAmount.toFixed(2)}
+                          </span>
+                        </div>
+                      )}
 
-    {/* Grand Total: Simply use the totalAmount from your backend */}
-    <div className="flex justify-between py-2">
-      <span className="text-lg font-semibold text-gray-900">Grand Total:</span>
-      <span className="text-lg font-bold text-blue-600">
-        ₹{Number(grandTotal).toFixed(2)}
-      </span>
-    </div>
-  </div>
-</div>
+                      {/* Grand Total: Simply use the totalAmount from your backend */}
+                      <div className="flex justify-between py-2">
+                        <span className="text-lg font-semibold text-gray-900">
+                          Grand Total:
+                        </span>
+                        <span className="text-lg font-bold text-blue-600">
+                          ₹{Number(grandTotal).toFixed(2)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
 
                   {/* Footer */}
                   <div className="mt-8 pt-4 border-t border-gray-300 text-center text-sm text-gray-500">
