@@ -30,7 +30,6 @@ import Navbar from "../components/Navbar";
 import Link from "next/link";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
-import Navbar from './../components/Navbar';
 
 /* ── tiny icon helpers (inline SVGs, no extra deps) ─────────────────── */
 const Icon = ({ d, size = 16, className = "" }) => (
