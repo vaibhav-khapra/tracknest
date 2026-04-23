@@ -91,8 +91,20 @@ const Page = () => {
         }
     };
 
-    if (status === "loading") return <div className="flex justify-center items-center h-screen">Loading session...</div>;
-    if (!user) return <div className="flex justify-center items-center h-screen">Loading user data...</div>;
+    if (status === "loading") return <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <Navbar />
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+          <p className="text-slate-500 text-sm font-medium">Loading…</p>
+        </div>
+      </div>
+    if (!user) return <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <Navbar />
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+          <p className="text-slate-500 text-sm font-medium">Loading…</p>
+        </div>
+      </div>
 
     return (
         <>
