@@ -1,6 +1,29 @@
 "use client";
 
 import React, { useEffect, useState, useMemo } from "react";
+
+/* ── print styles injected once into <head> ──────────────────────────── */
+const PRINT_STYLE = `
+@media print {
+  /* hide everything */
+  body > * { display: none !important; }
+
+  /* show only the invoice modal card */
+  #invoice-print-root,
+  #invoice-print-root * { display: revert !important; }
+
+  /* remove backdrop / shadows */
+  #invoice-print-root .fixed { position: static !important; background: none !important; backdrop-filter: none !important; box-shadow: none !important; }
+
+  /* ensure single page, no duplicate */
+  #invoice-print-root .relative { page-break-after: avoid; break-after: avoid; }
+
+  /* hide the action buttons when printing */
+  #invoice-print-actions { display: none !important; }
+
+  @page { size: A4; margin: 16mm; }
+}
+`;
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Navbar from "../components/Navbar";
@@ -106,6 +129,16 @@ export default function AllBillsPage() {
   const [filterDateRange, setFilterDateRange] = useState("all");
   const [sortBy, setSortBy] = useState("newest");
   const [showFilters, setShowFilters] = useState(false);
+
+  /* inject print CSS once */
+  useEffect(() => {
+    const style = document.createElement("style");
+    style.id = "tracknest-print-style";
+    style.textContent = PRINT_STYLE;
+    if (!document.getElementById("tracknest-print-style"))
+      document.head.appendChild(style);
+    return () => document.getElementById("tracknest-print-style")?.remove();
+  }, []);
 
   const [pagination, setPagination] = useState({
     page: 1,
@@ -695,7 +728,7 @@ export default function AllBillsPage() {
 
       {/* ── invoice modal ─────────────────────────────────────────────── */}
       {selectedBill && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center p-4 sm:p-8 overflow-y-auto">
+        <div id="invoice-print-root" className="fixed inset-0 z-50 flex items-start justify-center p-4 sm:p-8 overflow-y-auto">
           {/* backdrop */}
           <div
             className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm"
@@ -841,10 +874,14 @@ export default function AllBillsPage() {
                     Proprietor: <span className="font-semibold">{user.ownerName}</span>
                   </p>
                 )}
+                {/* branding inside invoice — visible on print too */}
+                <p className="text-slate-300 text-xs mt-4 tracking-wide">
+                  Powered by <span className="font-semibold text-blue-400">TrackNest</span> · Developed by Vaibhav Khapra
+                </p>
               </div>
 
-              {/* actions */}
-              <div className="flex gap-3 justify-center mt-6">
+              {/* actions — hidden on print */}
+              <div id="invoice-print-actions" className="flex gap-3 justify-center mt-6">
                 <button
                   onClick={() => window.print()}
                   className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-700 text-white text-sm font-semibold transition"
@@ -864,6 +901,16 @@ export default function AllBillsPage() {
           </div>
         </div>
       )}
+      {/* ── site footer ──────────────────────────────────────────────── */}
+      <footer className="bg-white border-t border-slate-100 py-5 text-center print:hidden">
+        <p className="text-slate-400 text-sm">
+          Powered by{" "}
+          <span className="font-bold text-blue-600 tracking-tight">TrackNest</span>
+          <span className="mx-2 text-slate-200">·</span>
+          Developed by{" "}
+          <span className="font-semibold text-slate-600">Vaibhav Khapra</span>
+        </p>
+      </footer>
     </>
   );
 }
