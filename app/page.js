@@ -77,7 +77,7 @@ export default function Home() {
       <Navbar />
 
       
-      <section className="bg-gradient-to-b mt-[90px] from-blue-50 to-white py-20 px-6 md:px-20">
+      <section className="bg-gradient-to-b  from-blue-50 to-white py-20 px-6 md:px-20">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12">
           <div className="w-full md:w-1/2 space-y-6">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">

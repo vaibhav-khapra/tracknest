@@ -69,7 +69,7 @@ export default function AddItemPage() {
     return (
         <>
             <Navbar />
-            <div className="p-6 max-w-2xl mx-auto mt-[90px] bg-white shadow-md rounded-lg">
+            <div className="p-6 max-w-2xl mx-auto  bg-white shadow-md rounded-lg">
                 <h1 className="text-3xl font-semibold mb-6 text-gray-800 text-center">Add New Item</h1>
 
                 {serverMessage && (

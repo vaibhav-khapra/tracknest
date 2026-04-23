@@ -109,7 +109,7 @@ const Page = () => {
     return (
         <>
             <Navbar />
-            <div className='mt-[90px] p-6'>
+            <div className=' p-6'>
                 <h2 className="text-2xl font-bold mb-4">User Profile</h2>
                 <div className="bg-gray-100 p-4 rounded-lg shadow-md">
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 mt-6 max-w-xl mx-auto bg-white p-6 rounded-lg shadow-md">

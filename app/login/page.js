@@ -22,7 +22,7 @@ const LoginPage = () => {
         <>
             <div className='min-h-screen '>
             <Navbar />
-            <div className="min-h-screen max-h-screen  bg-gradient-to-br mt-[90px] from-blue-50 to-indigo-100">
+            <div className="min-h-screen max-h-screen  bg-gradient-to-br from-blue-50 to-indigo-100">
                 <div className="container mx-auto px-4 py-12">
                     <div className="flex flex-col lg:flex-row items-center justify-center gap-12">
                         
