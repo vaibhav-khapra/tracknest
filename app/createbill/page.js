@@ -338,31 +338,64 @@ const performSearch = async (searchQuery) => {
             </Card>
 
             {/* Search Items */}
-            <Card>
-              <CardHeader title="Add Items" icon={<SearchIcon size={14} className="text-slate-500" />} />
-              {/* Search Items Card Content */}
-<div className="p-5">
-  <div className="relative mb-4">
-    <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center">
-      {isSearching ? (
-        <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
-      ) : (
-        <SearchIcon size={15} className="text-slate-400" />
+           {/* Search Items */}
+<Card>
+  <CardHeader title="Add Items" icon={<SearchIcon size={14} className="text-slate-500" />} />
+  <div className="p-5">
+    <div className="relative mb-4">
+      <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center">
+        {isSearching ? (
+          <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+        ) : (
+          <SearchIcon size={15} className="text-slate-400" />
+        )}
+      </div>
+      <input
+        ref={searchRef}
+        type="text"
+        placeholder="Type to search items..."
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        className="w-full pl-10 pr-10 py-2.5 border border-slate-200 rounded-xl text-sm text-slate-800 placeholder-slate-400 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
+      />
+      {query && (
+        <button 
+          onClick={() => { setQuery(""); setResults([]); }}
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+        >
+          <ClearIcon size={14} />
+        </button>
       )}
     </div>
-    <input
-      ref={searchRef}
-      type="text"
-      placeholder="Type to search items..."
-      value={query}
-      onChange={(e) => setQuery(e.target.value)}
-      className="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-xl text-sm text-slate-800 placeholder-slate-400 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
-    />
-  </div>
 
-  {/* Results display remains the same... */}
-</div>
-            </Card>
+    {results.length > 0 && (
+      <div className="border border-slate-200 rounded-xl overflow-hidden shadow-sm bg-white">
+        <ul className="divide-y divide-slate-100 max-h-64 overflow-y-auto">
+          {results.map((item) => (
+            <li key={item._id} className="flex justify-between items-center p-3 hover:bg-blue-50/40 transition group">
+              <div className="min-w-0 mr-2">
+                <p className="font-semibold text-slate-800 text-sm truncate">{item.title}</p>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  ₹{item.price} · Qty: {item.quantity}
+                </p>
+              </div>
+              <button onClick={() => addItemToBill(item)}
+                className="w-8 h-8 rounded-xl bg-blue-50 hover:bg-blue-600 text-blue-600 hover:text-white flex items-center justify-center transition shrink-0">
+                <PlusIcon size={16} />
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+
+    {results.length === 0 && query.length >= 2 && !isSearching && (
+      <p className="text-center text-slate-400 text-xs py-4 bg-slate-50 rounded-xl border border-dashed border-slate-200">
+        No items found matching "{query}"
+      </p>
+    )}
+  </div>
+</Card>
           </div>
 
           {/* ── RIGHT COLUMN ─────────────────────────────────────────── */}
