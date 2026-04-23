@@ -105,15 +105,23 @@ export default function AllBillsPage() {
     }
 
     const worksheetData = bills.map((item) => ({
-      Customer: item.customerName,
-      Discount: item.discount || "",
-      CGST: item.cgst || 0,
-      SGST: item.sgst || 0,
-      TotalAmount: item.totalAmount || 0,
-      Paymentmethod: item.paymentMethod || 0,
-      "Expiry Date": item.expirydate
-        ? new Date(item.expirydate).toLocaleDateString("en-IN")
-        : "",
+      // Format: "2023-10-24" or "24/10/2023"
+      Date: new Date(item.createdAt).toLocaleDateString("en-IN"),
+
+      Customer: item.customerName || "Cash Customer",
+
+      // Keep numbers as numbers for Excel calculations,
+      // or use .toFixed(2) if you want them as formatted strings
+      Discount: Number(item.discount) || 0,
+
+      CGST: Number(item.cgst) || 0,
+      SGST: Number(item.sgst) || 0,
+
+      // Ensuring total amount is always a number
+      TotalAmount: Number(item.totalAmount) || 0,
+
+      // Default to a string if it's a category
+      PaymentMethod: item.paymentMethod || "Not Specified",
     }));
 
     const worksheet = XLSX.utils.json_to_sheet(worksheetData);
