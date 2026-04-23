@@ -376,8 +376,9 @@ const performSearch = async (searchQuery) => {
               <div className="min-w-0 mr-2">
                 <p className="font-semibold text-slate-800 text-sm truncate">{item.title}</p>
                 <p className="text-xs text-slate-400 mt-0.5">
-                  ₹{item.price} · Qty: {item.quantity}
+                  ₹{item.price} · Qty: {item.quantity}  
                 </p>
+                {item.expirydate && <p className="text-xs text-slate-400 mt-0.5">  Exp: {new Date(item.expirydate).toLocaleDateString("en-IN")}  </p>}
               </div>
               <button onClick={() => addItemToBill(item)}
                 className="w-8 h-8 rounded-xl bg-blue-50 hover:bg-blue-600 text-blue-600 hover:text-white flex items-center justify-center transition shrink-0">

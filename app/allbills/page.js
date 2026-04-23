@@ -72,6 +72,11 @@ const PrintIcon = (p) => (
     d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z"
   />
 );
+const TrashIcon = (p) => (
+  <Icon 
+  {...p}
+    d="M3 6h18m-2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+);
 const EyeIcon = (p) => (
   <Icon
     {...p}
@@ -129,6 +134,7 @@ export default function AllBillsPage() {
   const [filterDateRange, setFilterDateRange] = useState("all");
   const [sortBy, setSortBy] = useState("newest");
   const [showFilters, setShowFilters] = useState(false);
+  const [deleteBill, setdeleteBill] = useState(false);
 
   /* inject print CSS once */
   useEffect(() => {
@@ -181,7 +187,8 @@ export default function AllBillsPage() {
       }
     };
     fetchBills();
-  }, [session, pagination.page]);
+    setdeleteBill(false)
+  }, [session,deleteBill, pagination.page]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -295,6 +302,23 @@ export default function AllBillsPage() {
     if (p >= 1 && p <= pagination.totalPages)
       setPagination((prev) => ({ ...prev, page: p }));
   };
+  const handleDeleteBill = async (p) =>{
+    
+    try {
+            await fetch("/api/delete/bill", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    _id : p
+                }),
+            });
+            setdeleteBill(true)
+            
+        } catch (error) {
+            console.error("Delete error:", error);
+        }
+
+  }
 
   const activeFilters =
     (filterPayment !== "all" ? 1 : 0) +
@@ -598,6 +622,14 @@ export default function AllBillsPage() {
                             >
                               <PrintIcon size={13} />
                               Print
+                            </button>
+
+                            <button
+                              onClick={() => handleDeleteBill(bill._id)}
+                              className="inline-flex items-center gap-1.5 text-xs font-semibold text-rose-600 hover:text-rose-800 bg-rose-50 hover:bg-rose-100 px-3 py-1.5 rounded-lg transition"
+                            >
+                              <TrashIcon size={13} />
+                              Delete
                             </button>
                           </div>
                         </td>

@@ -205,7 +205,7 @@ export default function DashboardPage() {
             />
             <StatCard
               icon={<LayersIcon size={18} className="text-violet-600" />}
-              label="Unique Items" value={summary.uniqueItems} sub="distinct SKUs"
+              label="Unique Items" value={summary.uniqueItems} sub="distinct items"
               accentBg="bg-violet-50" accentBlob="bg-violet-500"
             />
             <StatCard
