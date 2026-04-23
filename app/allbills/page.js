@@ -692,6 +692,14 @@ export default function AllBillsPage() {
                         <PrintIcon size={13} />
                         Print
                       </button>
+                       <button
+                            disabled={deleteBill}
+                              onClick={() => handleDeleteBill(bill._id)}
+                              className="inline-flex items-center gap-1.5 text-xs font-semibold text-rose-600 hover:text-rose-800 bg-rose-50 hover:bg-rose-100 px-3 py-1.5 rounded-lg transition"
+                            >
+                              <TrashIcon size={13} />
+                              Delete
+                            </button>
                     </div>
                   </div>
                 ))}
