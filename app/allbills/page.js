@@ -30,6 +30,7 @@ import Navbar from "../components/Navbar";
 import Link from "next/link";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import Navbar from './../components/Navbar';
 
 /* ── tiny icon helpers (inline SVGs, no extra deps) ─────────────────── */
 const Icon = ({ d, size = 16, className = "" }) => (
@@ -304,6 +305,7 @@ export default function AllBillsPage() {
   if (status === "loading" || !session)
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <Navbar />
         <div className="flex flex-col items-center gap-3">
           <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
           <p className="text-slate-500 text-sm font-medium">Loading…</p>

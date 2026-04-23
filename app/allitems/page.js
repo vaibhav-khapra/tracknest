@@ -230,7 +230,13 @@ export default function DashboardPage() {
         );
     };
 
-    if (status === "loading" || loading) return <div className="flex justify-center items-center h-screen">Loading Inventory...</div>;
+    if (status === "loading" || loading) return <>
+        <Navbar />
+        <div className="flex flex-col justify-center items-center h-screen">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-600 mb-4"></div>
+          <p className="text-gray-500 font-bold tracking-tight">Fetching all items...</p>
+        </div>
+      </>
 
     return (
         <>
