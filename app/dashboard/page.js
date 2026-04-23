@@ -15,15 +15,38 @@ const Icon = ({ d, size = 16, className = "", fill = "none" }) => (
     <path d={d} />
   </svg>
 );
-const BoxIcon        = (p) => <Icon {...p} d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />;
-const LayersIcon     = (p) => <Icon {...p} d="M12 2 2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />;
-const AlertTriIcon   = (p) => <Icon {...p} d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01" />;
-const ClockIcon      = (p) => <Icon {...p} d="M12 22c5.52 0 10-4.48 10-10S17.52 2 12 2 2 6.48 2 12s4.48 10 10 10zM12 6v6l4 2" />;
-const PlusIcon       = (p) => <Icon {...p} d="M12 5v14M5 12h14" />;
-const ReceiptIcon    = (p) => <Icon {...p} d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2" />;
-const ArrowRightIcon = (p) => <Icon {...p} d="M5 12h14M12 5l7 7-7 7" />;
+const BoxIcon          = (p) => <Icon {...p} d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />;
+const LayersIcon       = (p) => <Icon {...p} d="M12 2 2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />;
+const AlertTriIcon     = (p) => <Icon {...p} d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01" />;
+const ClockIcon        = (p) => <Icon {...p} d="M12 22c5.52 0 10-4.48 10-10S17.52 2 12 2 2 6.48 2 12s4.48 10 10 10zM12 6v6l4 2" />;
+const PlusIcon         = (p) => <Icon {...p} d="M12 5v14M5 12h14" />;
+const ReceiptIcon      = (p) => <Icon {...p} d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2" />;
+const ArrowRightIcon   = (p) => <Icon {...p} d="M5 12h14M12 5l7 7-7 7" />;
+const BellIcon         = (p) => <Icon {...p} d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />;
+const PackageIcon      = (p) => <Icon {...p} d="M16.5 9.4 7.55 4.24M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16zM3.27 6.96 12 12.01l8.73-5.05M12 22.08V12" />;
 
-/* ─── payment badge — identical to AllBillsPage ─────────────────────── */
+/* ─── helpers ───────────────────────────────────────────────────────── */
+const getDaysUntilExpiry = (expirydate) => {
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+  const exp = new Date(expirydate);
+  exp.setHours(0, 0, 0, 0);
+  return Math.ceil((exp - now) / (1000 * 60 * 60 * 24));
+};
+
+const getExpiryUrgency = (days) => {
+  if (days <= 7)  return { color: "text-red-600",    bg: "bg-red-50",    dot: "bg-red-500",    label: `${days}d left`,    ring: "border-red-200" };
+  if (days <= 14) return { color: "text-orange-600", bg: "bg-orange-50", dot: "bg-orange-400", label: `${days}d left`,    ring: "border-orange-200" };
+  return            { color: "text-yellow-600",  bg: "bg-yellow-50", dot: "bg-yellow-400", label: `${days}d left`,    ring: "border-yellow-200" };
+};
+
+const getLowStockUrgency = (qty) => {
+  if (qty === 0)  return { color: "text-red-600",    dot: "bg-red-500",    label: "Out of stock" };
+  if (qty <= 5)   return { color: "text-orange-600", dot: "bg-orange-400", label: `Only ${qty} left` };
+  return            { color: "text-amber-600",   dot: "bg-amber-400",  label: `${qty} in stock` };
+};
+
+/* ─── payment badge ─────────────────────────────────────────────────── */
 const PaymentBadge = ({ method }) => {
   const map = {
     cash:   "bg-emerald-100 text-emerald-700 border-emerald-200",
@@ -39,7 +62,7 @@ const PaymentBadge = ({ method }) => {
   );
 };
 
-/* ─── stat card — mirrors AllBillsPage StatCard ─────────────────────── */
+/* ─── stat card ─────────────────────────────────────────────────────── */
 const StatCard = ({ icon, label, value, sub, accentBg, accentBlob }) => (
   <div className="relative overflow-hidden rounded-2xl p-5 bg-white border border-gray-100 shadow-sm">
     <div className={`absolute top-0 right-0 w-24 h-24 rounded-full opacity-10 -translate-y-6 translate-x-6 ${accentBlob}`} />
@@ -57,18 +80,41 @@ const Skeleton = ({ className }) => (
   <div className={`animate-pulse rounded-2xl bg-gray-100 ${className}`} />
 );
 
+/* ─── alert panel ───────────────────────────────────────────────────── */
+const AlertPanel = ({ icon, title, subtitle, count, borderColor, iconBg, iconColor, badgeBg, badgeText, badgeBorder, children }) => (
+  <div className={`bg-white border ${borderColor} rounded-2xl shadow-sm p-5`}>
+    <div className="flex items-center gap-2.5 mb-4">
+      <div className={`w-9 h-9 rounded-xl ${iconBg} flex items-center justify-center shrink-0`}>
+        {React.cloneElement(icon, { size: 16, className: iconColor })}
+      </div>
+      <div>
+        <h3 className="font-bold text-slate-800 text-sm">{title}</h3>
+        <p className="text-xs text-slate-400">{subtitle}</p>
+      </div>
+      <span className={`ml-auto text-xs font-bold ${badgeBg} ${badgeText} px-2.5 py-0.5 rounded-full border ${badgeBorder}`}>
+        {count}
+      </span>
+    </div>
+    <ul className="space-y-2.5">{children}</ul>
+  </div>
+);
+
 export default function DashboardPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [user, setUser] = useState(null);
-  const [summary, setSummary] = useState({ totalItems: 0, uniqueItems: 0, outOfStock: 0, expired: 0 });
-  const [outOfStockItems, setOutOfStockItems] = useState([]);
-  const [expiredItems, setExpiredItems] = useState([]);
-  const [recentBills, setRecentBills] = useState([]);
-  const [showAllBills, setShowAllBills] = useState(false);
-  const [loadingUser, setLoadingUser] = useState(true);
-  const [loadingSummary, setLoadingSummary] = useState(true);
-  const [loadingBills, setLoadingBills] = useState(true);
+  const [summary, setSummary] = useState({
+    totalItems: 0, uniqueItems: 0, outOfStock: 0, expired: 0,
+  });
+  const [outOfStockItems, setOutOfStockItems]     = useState([]);
+  const [expiredItems, setExpiredItems]           = useState([]);
+  const [expiringSoonItems, setExpiringSoonItems] = useState([]); // NEW
+  const [lowStockItems, setLowStockItems]         = useState([]); // NEW
+  const [recentBills, setRecentBills]             = useState([]);
+  const [showAllBills, setShowAllBills]           = useState(false);
+  const [loadingUser, setLoadingUser]             = useState(true);
+  const [loadingSummary, setLoadingSummary]       = useState(true);
+  const [loadingBills, setLoadingBills]           = useState(true);
 
   useEffect(() => {
     if (status === "unauthenticated") router.push("/login");
@@ -80,7 +126,7 @@ export default function DashboardPage() {
       const email = session?.user?.email;
       if (!email) return;
       try {
-        const res = await fetch("/api/profile", {
+        const res  = await fetch("/api/profile", {
           method: "POST", headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email }),
         });
@@ -100,15 +146,22 @@ export default function DashboardPage() {
     const fetchSummary = async () => {
       setLoadingSummary(true);
       try {
-        const res = await fetch("/api/allitems", {
+        const res  = await fetch("/api/allitems", {
           method: "POST", headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email: session?.user?.email }),
         });
         const data = await res.json();
         if (data.success) {
-          setSummary({ totalItems: data.totalItems, uniqueItems: data.uniqueItems, outOfStock: data.outOfStock, expired: data.expired });
-          setOutOfStockItems(data.outOfStockItems);
-          setExpiredItems(data.expiredItems);
+          setSummary({
+            totalItems: data.totalItems,
+            uniqueItems: data.uniqueItems,
+            outOfStock: data.outOfStock,
+            expired: data.expired,
+          });
+          setOutOfStockItems(data.outOfStockItems || []);
+          setExpiredItems(data.expiredItems || []);
+          setExpiringSoonItems(data.expiringSoonItems || []);
+          setLowStockItems(data.lowStockItems || []);
         }
       } catch (e) { console.error(e); }
       finally { setLoadingSummary(false); }
@@ -120,7 +173,7 @@ export default function DashboardPage() {
     const fetchRecentBills = async () => {
       setLoadingBills(true);
       try {
-        const res = await fetch("/api/bills/recent", {
+        const res  = await fetch("/api/bills/recent", {
           method: "POST", headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email: session?.user?.email, limit: showAllBills ? null : 5 }),
         });
@@ -143,7 +196,11 @@ export default function DashboardPage() {
       </div>
     );
 
-  const hasAlerts = outOfStockItems.length > 0 || expiredItems.length > 0;
+  const hasAlerts =
+    outOfStockItems.length > 0 ||
+    expiredItems.length > 0 ||
+    expiringSoonItems.length > 0 ||
+    lowStockItems.length > 0;
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -228,67 +285,149 @@ export default function DashboardPage() {
 
         {/* ── alert panels ─────────────────────────────────────────────── */}
         {!loadingSummary && hasAlerts && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-            {outOfStockItems.length > 0 && (
-              <div className="bg-white border border-amber-200 rounded-2xl shadow-sm p-5">
-                <div className="flex items-center gap-2.5 mb-4">
-                  <div className="w-9 h-9 rounded-xl bg-amber-50 flex items-center justify-center shrink-0">
-                    <AlertTriIcon size={16} className="text-amber-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-slate-800 text-sm">Out of Stock</h3>
-                    <p className="text-xs text-slate-400">Items needing restock</p>
-                  </div>
-                  <span className="ml-auto text-xs font-bold bg-amber-100 text-amber-700 px-2.5 py-0.5 rounded-full border border-amber-200">
-                    {outOfStockItems.length}
-                  </span>
-                </div>
-                <ul className="space-y-2">
-                  {outOfStockItems.map((item) => (
-                    <li key={item._id} className="flex items-start gap-2 text-sm">
-                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0" />
-                      <div className="min-w-0">
-                        <span className="font-medium text-slate-700">{item.title}</span>
-                        {item.description && (
-                          <span className="text-slate-400 ml-1 text-xs">— {item.description}</span>
-                        )}
-                      </div>
-                    </li>
-                  ))}
-                </ul>
+          <div className="mb-8 space-y-4">
+
+            {/* row 1 — expiring soon + expired */}
+            {(expiringSoonItems.length > 0 || expiredItems.length > 0) && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                {/* Expiring Soon (≤ 30 days) */}
+                {expiringSoonItems.length > 0 && (
+                  <AlertPanel
+                    icon={<BellIcon />}
+                    title="Expiring Soon"
+                    subtitle="Items expiring within 30 days"
+                    count={expiringSoonItems.length}
+                    borderColor="border-yellow-200"
+                    iconBg="bg-yellow-50"
+                    iconColor="text-yellow-600"
+                    badgeBg="bg-yellow-100"
+                    badgeText="text-yellow-700"
+                    badgeBorder="border-yellow-200"
+                  >
+                    {expiringSoonItems.map((item) => {
+                      const days    = getDaysUntilExpiry(item.expirydate);
+                      const urgency = getExpiryUrgency(days);
+                      return (
+                        <li key={item._id} className="flex items-start justify-between gap-2 text-sm">
+                          <div className="flex items-start gap-2 min-w-0">
+                            <span className={`mt-1.5 w-1.5 h-1.5 rounded-full ${urgency.dot} shrink-0`} />
+                            <div className="min-w-0">
+                              <span className="font-medium text-slate-700">{item.title}</span>
+                              {item.description && (
+                                <span className="text-slate-400 ml-1 text-xs">— {item.description}</span>
+                              )}
+                            </div>
+                          </div>
+                          <span className={`shrink-0 text-xs font-semibold px-2 py-0.5 rounded-full ${urgency.bg} ${urgency.color} border ${urgency.ring}`}>
+                            {urgency.label}
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </AlertPanel>
+                )}
+
+                {/* Expired */}
+                {expiredItems.length > 0 && (
+                  <AlertPanel
+                    icon={<ClockIcon />}
+                    title="Expired Items"
+                    subtitle="Past expiry date"
+                    count={expiredItems.length}
+                    borderColor="border-rose-200"
+                    iconBg="bg-rose-50"
+                    iconColor="text-rose-600"
+                    badgeBg="bg-rose-100"
+                    badgeText="text-rose-700"
+                    badgeBorder="border-rose-200"
+                  >
+                    {expiredItems.map((item) => (
+                      <li key={item._id} className="flex items-start gap-2 text-sm">
+                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-rose-400 shrink-0" />
+                        <div className="min-w-0">
+                          <span className="font-medium text-slate-700">{item.title}</span>
+                          <span className="text-slate-400 text-xs ml-1.5">
+                            Expired{" "}
+                            {new Date(item.expirydate).toLocaleDateString("en-GB", {
+                              day: "2-digit", month: "short", year: "numeric",
+                            })}
+                          </span>
+                        </div>
+                      </li>
+                    ))}
+                  </AlertPanel>
+                )}
               </div>
             )}
 
-            {expiredItems.length > 0 && (
-              <div className="bg-white border border-rose-200 rounded-2xl shadow-sm p-5">
-                <div className="flex items-center gap-2.5 mb-4">
-                  <div className="w-9 h-9 rounded-xl bg-rose-50 flex items-center justify-center shrink-0">
-                    <ClockIcon size={16} className="text-rose-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-slate-800 text-sm">Expired Items</h3>
-                    <p className="text-xs text-slate-400">Past expiry date</p>
-                  </div>
-                  <span className="ml-auto text-xs font-bold bg-rose-100 text-rose-700 px-2.5 py-0.5 rounded-full border border-rose-200">
-                    {expiredItems.length}
-                  </span>
-                </div>
-                <ul className="space-y-2">
-                  {expiredItems.map((item) => (
-                    <li key={item._id} className="flex items-start gap-2 text-sm">
-                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-rose-400 shrink-0" />
-                      <div className="min-w-0">
-                        <span className="font-medium text-slate-700">{item.title}</span>
-                        <span className="text-slate-400 text-xs ml-1.5">
-                          Expired{" "}
-                          {new Date(item.expirydate).toLocaleDateString("en-GB", {
-                            day: "2-digit", month: "short", year: "numeric",
-                          })}
-                        </span>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
+            {/* row 2 — out of stock + low stock */}
+            {(outOfStockItems.length > 0 || lowStockItems.length > 0) && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                {/* Out of Stock */}
+                {outOfStockItems.length > 0 && (
+                  <AlertPanel
+                    icon={<AlertTriIcon />}
+                    title="Out of Stock"
+                    subtitle="Items needing restock"
+                    count={outOfStockItems.length}
+                    borderColor="border-amber-200"
+                    iconBg="bg-amber-50"
+                    iconColor="text-amber-600"
+                    badgeBg="bg-amber-100"
+                    badgeText="text-amber-700"
+                    badgeBorder="border-amber-200"
+                  >
+                    {outOfStockItems.map((item) => (
+                      <li key={item._id} className="flex items-start gap-2 text-sm">
+                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0" />
+                        <div className="min-w-0">
+                          <span className="font-medium text-slate-700">{item.title}</span>
+                          {item.description && (
+                            <span className="text-slate-400 ml-1 text-xs">— {item.description}</span>
+                          )}
+                        </div>
+                      </li>
+                    ))}
+                  </AlertPanel>
+                )}
+
+                {/* Low Stock (> 0 but < 20) */}
+                {lowStockItems.length > 0 && (
+                  <AlertPanel
+                    icon={<PackageIcon />}
+                    title="Low Stock"
+                    subtitle="Items below 20 units"
+                    count={lowStockItems.length}
+                    borderColor="border-orange-200"
+                    iconBg="bg-orange-50"
+                    iconColor="text-orange-600"
+                    badgeBg="bg-orange-100"
+                    badgeText="text-orange-700"
+                    badgeBorder="border-orange-200"
+                  >
+                    {lowStockItems.map((item) => {
+                      const urgency = getLowStockUrgency(item.quantity);
+                      return (
+                        <li key={item._id} className="flex items-start justify-between gap-2 text-sm">
+                          <div className="flex items-start gap-2 min-w-0">
+                            <span className={`mt-1.5 w-1.5 h-1.5 rounded-full ${urgency.dot} shrink-0`} />
+                            <div className="min-w-0">
+                              <span className="font-medium text-slate-700">{item.title}</span>
+                              {item.description && (
+                                <span className="text-slate-400 ml-1 text-xs">— {item.description}</span>
+                              )}
+                            </div>
+                          </div>
+                          <span className={`shrink-0 text-xs font-semibold ${urgency.color} whitespace-nowrap`}>
+                            {urgency.label}
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </AlertPanel>
+                )}
               </div>
             )}
           </div>
