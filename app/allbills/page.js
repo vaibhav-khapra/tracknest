@@ -303,6 +303,7 @@ export default function AllBillsPage() {
       setPagination((prev) => ({ ...prev, page: p }));
   };
   const handleDeleteBill = async (p) =>{
+    if (deleteBill) return;
     
     try {
             await fetch("/api/delete/bill", {
@@ -625,6 +626,7 @@ export default function AllBillsPage() {
                             </button>
 
                             <button
+                            disabled={deleteBill}
                               onClick={() => handleDeleteBill(bill._id)}
                               className="inline-flex items-center gap-1.5 text-xs font-semibold text-rose-600 hover:text-rose-800 bg-rose-50 hover:bg-rose-100 px-3 py-1.5 rounded-lg transition"
                             >
